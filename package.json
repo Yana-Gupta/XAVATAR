@@ -8,9 +8,10 @@
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "format" : "prettier --write ."
+    "format": "prettier --write ."
   },
   "dependencies": {
+    "html2canvas": "^1.4.1",
     "prettier": "^3.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -1,60 +1,65 @@
-import { useEffect, useRef, useState } from "react"
-import { useLocation } from "react-router-dom"
+import { useEffect, useState } from "react";
+import html2canvas from "html2canvas";
+import { useLocation } from "react-router-dom";
 
-const Image = () => {
-  const location = useLocation()
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const divRef = useRef<HTMLDivElement>(null)
-  const [name, setName] = useState<string | null>(null)
-  const [color, setColor] = useState<string | null>(null)
 
-  const queryParams = new URLSearchParams(location.search)
+const ConvertToImage = () => {
 
-  const getNameLetters = (name: string | null): string | null => {
-    let letter = ""
-    if (name) {
-      const words = name.split(" ").map((word) => word[0])
-      for (var i = 0; i < words.length; i++) {
-        letter += words[i]
-      }
-    }
-    return letter
-  }
+  const [imageDataURL, setImageDataURL] = useState<string | null>(null);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
+
 
   useEffect(() => {
-    if (queryParams.get("name") != null) {
-      setName(getNameLetters(queryParams.get("name")))
-      console.log(name)
+    const divElement = document.getElementById("generator")
+
+    if (divElement) {
+      html2canvas(divElement)
+        .then(function (canvas) {
+          const dataURL = canvas.toDataURL();
+
+          if (dataURL != "data:,") {
+            console.log("Hello world")
+            setImageDataURL(dataURL);
+          }
+        })
+        .catch(error =>
+          console.error(error)
+        )
     }
+    divElement?.style.setProperty("display", "none")
+  }, []);
 
-    if (queryParams.get("color") != null) {
-      setColor(queryParams.get("color"))
-    }
-
-    const divElement = document.createElement("div")
-
-    if (name) {
-      divElement.innerHTML = name
-    }
-
-    divElement.style.borderRadius = "50%"
-    divElement.style.width = "100px"
-    divElement.style.height = "100px"
-    divElement.style.background =
-      `linear-gradient(to right, ${color} 0%, #cecaca 65%, #B496C5 100%)`
-    divElement.style.textAlign = "center"
-    divElement.style.display = "flex"
-    divElement.style.justifyContent = "center"
-    divElement.style.alignItems = "center"
-    document.body.appendChild(divElement)
-  })
 
   return (
-    <>
-      <div ref={divRef} />
-      <canvas ref={canvasRef} />
-    </>
-  )
-}
 
-export default Image
+    <div>
+      <div id="generator"
+        style={{
+          height: "200px",
+          width: "200px",
+          borderRadius: "9999px",
+          backgroundColor: "transparent",
+          background: `linear-gradient(to right, #ff8177 0%, #ff867a 10%, #ff8c7f 21%, #f99185 52%, #cf556c 78%, #b12a5b 100%)`,
+          display: "flex",
+          alignItems: "center",
+          textAlign: "center",
+          alignContent: "center",
+          justifyContent: "center",
+          fontWeight: 600,
+          fontSize: "40px",
+        }}>
+        {/* Your content inside the hidden div */}
+        <p>
+          Y G
+        </p>
+      </div>
+      {/* Display the image to users */}
+      {imageDataURL && <img src={imageDataURL} alt="Captured content" />}
+    </div>
+  );
+};
+
+export default ConvertToImage;
+
