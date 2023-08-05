@@ -1,5 +1,5 @@
 
-const numOfColors = 6;
+const NUM_OF_COLORS = 6;
 
 function generateRandomHexColor() {
     const letters = '0123456789ABCDEF';
@@ -13,10 +13,9 @@ function generateRandomHexColor() {
 
 export const getColor = async (): Promise<Array<string>> => {
     var color: Array<string> = []
-    for (var i = 0; i < numOfColors; i++) {
+    for (var i = 0; i < NUM_OF_COLORS; i++) {
         color.push(generateRandomHexColor())
     }
-    console.log("from ", color)
     return color
 }
 
